@@ -1,0 +1,49 @@
+//Base Tracker and Meal and Workout Class
+
+//Parent Class
+
+calorieTracker
+│
+├── Constructor
+│   ├── this.calorielimit = 3000 (Sets a calorie limit for the day)
+│   ├── this._totalLimit = 0 (Tracks total calorie intake and expenditure)
+│   ├── this._meals = [] (Array to store meals added to the tracker)
+│   └── this._workouts = [] (Array to store workouts added to the tracker)
+│
+├── Method: addMeal(meal)
+│   ├── Adds the meal to _meals array
+│   ├── Increases _totalLimit by meal.calories
+│
+└── Method: addWorkout(workouts)
+    ├── Adds the workout to _workouts array (Fix needed: should be this._workouts.push(workouts))
+    ├── Decreases _totalLimit by workout.calories (Subtracts burned calories from total limit)
+    
+
+//Sub class or Helper classes    
+
+Meal
+│
+├── Constructor
+│   ├── this.id = Math.random().toString(16) (Generates unique ID for the meal)
+│   ├── this.name = name (Stores meal's name)
+│   └── this.calories = calories (Stores calories of the meal)
+
+
+Workout
+│
+├── Constructor
+│   ├── this.id = Math.random().toString(16) (Generates unique ID for the workout)
+│   ├── this.name = name (Stores workout's name)
+│   └── this.calories = calories (Stores calories burned during the workout)
+
+
+// Instances of the Classes
+Usage
+│
+├── const tracker = new calorieTracker() (Creates a new calorieTracker instance)
+│
+├── const breakfast = new Meal('Breakfast', 400) (Creates a new meal object with 400 calories)
+│
+├── const fatBurn = new Workout('Pushup', 500) (Creates a new workout object burning 500 calories)
+│
+└── tracker.addMeal(breakfast) (Adds the breakfast meal to the tracker, updating total calorie intake)
