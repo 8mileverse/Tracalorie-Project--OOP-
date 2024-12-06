@@ -119,7 +119,7 @@ class Workout {
 
 const tracker = new calorieTracker();
 
-const breakfast = new Meal("Breakfast", 4000);
+const breakfast = new Meal("Breakfast", 2000);
 const fatBurn = new Workout("Pushup", 500);
 
 tracker.addMeal(breakfast);
