@@ -74,15 +74,15 @@ class calorieTracker {
       totalCalRemainingLi.parentElement.parentElement.classList.add(
         "bg-danger"
       );
-      calProgress.classList.add('bg-danger');
-      calProgress.classList.remove('bg-success');
+      calProgress.classList.add("bg-danger");
+      calProgress.classList.remove("bg-success");
     } else {
       totalCalRemainingLi.parentElement.parentElement.classList.remove(
         "bg-danger"
       );
       totalCalRemainingLi.parentElement.parentElement.classList.add("bg-light");
-      calProgress.classList.remove('bg-danger');
-      calProgress.classList.add('bg-success');
+      calProgress.classList.remove("bg-danger");
+      calProgress.classList.add("bg-success");
     }
   }
 
@@ -117,15 +117,63 @@ class Workout {
   }
 }
 
-const tracker = new calorieTracker();
+class App {
+  constructor() {
+    this._tracker = new calorieTracker();
+    document
+      .querySelector("#meal-form")
+      .addEventListener("submit", this._newMeal.bind(this));
 
-const breakfast = new Meal("Breakfast", 2000);
-const fatBurn = new Workout("Pushup", 500);
+    document
+      .querySelector("#workout-form")
+      .addEventListener("submit", this._newWorkout.bind(this));
+  }
 
-tracker.addMeal(breakfast);
-tracker.addWorkout(fatBurn);
+  _newMeal(e) {
+    e.preventDefault();
+    const name = document.querySelector("#meal-name");
+    const cal = document.querySelector("#meal-calories");
 
-console.log(tracker); // outputs: 200
+    // Validate Inputs
+    if (name.value === "" || cal.value === "") {
+      alert("Please fill in all Fields");
+      return;
+    }
 
-console.log(tracker._meals); // outputs:
-console.log(tracker._workouts); // outputs:
+    const meal = new Meal(name.value, +cal.value); // Create new Meal instance
+    this._tracker.addMeal(meal); // Add meal to tracker
+    name.value = "";
+    cal.value = "";
+
+    // Close the meal collapse
+    const collapseMeal = document.querySelector("#collaspe-meal");
+    const bsCollapse = bootstrap.Collapse.getInstance(collapseMeal) || 
+                        new bootstrap.Collapse(collapseMeal, { toggle: false });
+    bsCollapse.hide();
+  }
+
+  _newWorkout(e) {
+    e.preventDefault();
+    const name = document.querySelector("#workout-name");
+    const cal = document.querySelector("#workout-calories");
+
+    // Validate Inputs
+    if (name.value === "" || cal.value === "") {
+      alert("Please fill in all Fields");
+      return;
+    }
+
+    const workout = new Workout(name.value, +cal.value); // Create new Workout instance
+    this._tracker.addWorkout(workout); // Add workout to tracker
+    name.value = "";
+    cal.value = "";
+
+    // Close the workout collapse
+    const collapseWorkout = document.querySelector("#collaspe-workout");
+    const bsCollapse = bootstrap.Collapse.getInstance(collapseWorkout) || 
+                        new bootstrap.Collapse(collapseWorkout, { toggle: false });
+    bsCollapse.hide();
+  }
+}
+
+const app = new App(); // Initialize the App class
