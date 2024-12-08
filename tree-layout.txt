@@ -196,3 +196,83 @@ Instances and Usage:
   │   ├── console.log(tracker)        # Logs tracker instance
   │   ├── console.log(tracker._meals) # Logs meals array
   │   └── console.log(tracker._workouts) # Logs workouts array
+
+
+///////////////////////////////////////////APPS AND REFACTORING TO A SINGLE _NEWITEM//////////////////////////////////////////////////////////////////////
+
+
+App
+├── Properties
+│   └── _tracker: Instance of calorieTracker
+├── Methods
+│   ├── constructor()
+│   │   ├── Initializes calorieTracker
+│   │   ├── Sets up event listeners for:
+│   │   │   ├── #meal-form -> Calls _newItem('meal')
+│   │   │   └── #workout-form -> Calls _newItem('workout')
+│   └── _newItem(type, e)
+│       ├── Prevents default form submission
+│       ├── Gets inputs (name, calories) based on type
+│       ├── Validates inputs (alerts if empty)
+│       ├── Depending on type:
+│       │   ├── Creates new Meal or Workout instance
+│       │   └── Adds it to calorieTracker (addMeal/addWorkout)
+│       ├── Clears input fields
+│       └── Collapses the form using Bootstrap
+
+calorieTracker
+├── Properties
+│   ├── _calorieLimit: Default calorie limit (3000)
+│   ├── _totalLimit: Total calories (starts at 0)
+│   ├── _meals: Array of Meal objects
+│   └── _workouts: Array of Workout objects
+├── Public Methods
+│   ├── addMeal(meal)
+│   │   ├── Pushes meal to _meals
+│   │   ├── Increments _totalLimit by meal.calories
+│   │   └── Calls _render()
+│   └── addWorkout(workout)
+│       ├── Pushes workout to _workouts
+│       ├── Decrements _totalLimit by workout.calories
+│       └── Calls _render()
+├── Private Methods
+│   ├── _displayCaloriesTotal()
+│   │   └── Updates #calories-total with _totalLimit
+│   ├── _displayCaloriesLimit()
+│   │   └── Updates #calories-limit with _calorieLimit
+│   ├── _displayCaloriesConsumed()
+│   │   ├── Calculates total calories from _meals
+│   │   └── Updates #calories-consumed
+│   ├── _displayCaloriesBurned()
+│   │   ├── Calculates total calories from _workouts
+│   │   └── Updates #calories-burned
+│   ├── _displayCaloriesRemaining()
+│   │   ├── Calculates remaining calories (_calorieLimit - _totalLimit)
+│   │   ├── Updates #calories-remaining
+│   │   └── Changes styles based on remaining calories
+│   └── _displayCalProgress()
+│       ├── Calculates percentage of calorie usage
+│       └── Updates progress bar width and style
+└── _render()
+    ├── Calls:
+    │   ├── _displayCaloriesTotal()
+    │   ├── _displayCaloriesConsumed()
+    │   ├── _displayCaloriesBurned()
+    │   ├── _displayCaloriesRemaining()
+    │   └── _displayCalProgress()
+
+Meal
+├── Properties
+│   ├── id: Random string ID
+│   ├── name: Meal name
+│   └── calories: Number of calories
+└── Methods
+    └── constructor(name, calories)
+
+Workout
+├── Properties
+│   ├── id: Random string ID
+│   ├── name: Workout name
+│   └── calories: Number of calories
+└── Methods
+    └── constructor(name, calories)
