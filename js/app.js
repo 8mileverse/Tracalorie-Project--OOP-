@@ -1,7 +1,7 @@
 class calorieTracker {
   constructor() {
     // runs the function when it is intanstiated
-    this._calorieLimit = 3000;
+    this._calorieLimit = 0;
     this._totalLimit = 0;
     this._meals = []; // adds to the calorie
     this._workouts = []; // takes away from the calorie
@@ -50,6 +50,12 @@ class calorieTracker {
       this._workouts.splice(WorkoutIndex, 1);
       this._render();
     }
+  }
+
+  setLimit(calorieLimit) {
+    this._calorieLimit = calorieLimit;
+    this._displayCaloriesLimit();
+    this._render();
   }
 
   reset() {
@@ -314,6 +320,20 @@ class App {
   }
   _setLimit(e) {
     e.preventDefault();
+
+    const limit = document.querySelector("#limit");
+
+    if (limit.value === "") {
+      alert("Please enter a calorie limit");
+      return;
+    }
+    this._tracker.setLimit(+limit.value); // especially if we are passing in a number as a value instead of string
+    limit.value = ""; // Clear the input field
+
+    const modalEl = document.querySelector("#limit-modal");
+
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide(); // Hide the modal after setting the limit
   }
 }
 const app = new App(); // Initialize the App class
